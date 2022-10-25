@@ -51,102 +51,95 @@ class Board:
         # Check if the piece is outflanked by a piece of the same color to the right
         # If it is, change the color of the pieces between the two pieces of the same color
         # If it is not, do nothing
-        if x < 7:
-            indice = x + 1
-            while self.board[x + 1][y] != self.player and self.board[x + 1][y] != 0:
-                indice += 1
-                if indice == 8:
-                    break
+        for i in range(x + 1, 8):
+            if self.board[i][y] == 0:
+                break
+            elif self.board[i][y] == self.board[x][y]:
+                for j in range(x + 1, i):
+                    self.board[j][y] = self.board[x][y]
+                break
 
-            print(indice)
-            if indice == 8:
-                pass
-            else:
-                if self.board[x][y] == 1:
-                    for i in range(x + 1, indice):
-                        self.board[i][y] = 2
-                elif self.board[x][y] == 2:
-                    for i in range(x + 1, indice):
-                        self.board[i][y] = 1
-            
         # Check if the piece is outflanked by a piece of the same color to the left
         # If it is, change the color of the pieces between the two pieces of the same color
         # If it is not, do nothing
-        if x > 0:
-            for i in range(x - 1, 0, -1):
-                if self.board[i][y] == self.player:
-                    for j in range(x - 1, i, -1):
-                        self.board[j][y] = self.player
-                    break
-                elif self.board[i][y] == 0:
-                    break
-        # Check if the piece is outflanked by a piece of the same color above
+        for i in range(x - 1, -1, -1):
+            if self.board[i][y] == 0:
+                break
+            elif self.board[i][y] == self.board[x][y]:
+                for j in range(x - 1, i, -1):
+                    self.board[j][y] = self.board[x][y]
+                break
+
+        # Check if the piece is outflanked by a piece of the same color to the bottom
         # If it is, change the color of the pieces between the two pieces of the same color
         # If it is not, do nothing
-        if y > 0:
-            for i in range(y - 1, 0, -1):
-                if self.board[x][i] == self.player:
-                    for j in range(y - 1, i, -1):
-                        self.board[x][j] = self.player
-                    break
-                elif self.board[x][i] == 0:
-                    break
-        # Check if the piece is outflanked by a piece of the same color below
+        for i in range(y + 1, 8):
+            if self.board[x][i] == 0:
+                break
+            elif self.board[x][i] == self.board[x][y]:
+                for j in range(y + 1, i):
+                    self.board[x][j] = self.board[x][y]
+                break
+
+        # Check if the piece is outflanked by a piece of the same color to the top
         # If it is, change the color of the pieces between the two pieces of the same color
         # If it is not, do nothing
-        if y < 7:
-            for i in range(y + 1, 8):
-                if self.board[x][i] == self.player:
-                    for j in range(y + 1, i):
-                        self.board[x][j] = self.player
-                    break
-                elif self.board[x][i] == 0:
-                    break
-        # Check if the piece is outflanked by a piece of the same color to the top right
-        # If it is, change the color of the pieces between the two pieces of the same color
-        # If it is not, do nothing
-        if x < 7 and y > 0:
-            for i in range(1, 8):
-                if x + i < 8 and y - i >= 0:
-                    if self.board[x + i][y - i] == self.player:
-                        for j in range(1, i):
-                            self.board[x + j][y - j] = self.player
-                        break
-                    elif self.board[x + i][y - i] == 0:
-                        break
-        # Check if the piece is outflanked by a piece of the same color to the top left
-        # If it is, change the color of the pieces between the two pieces of the same color
-        # If it is not, do nothing
-        if x > 0 and y > 0:
-            for i in range(1, 8):
-                if x - i >= 0 and y - i >= 0:
-                    if self.board[x - i][y - i] == self.player:
-                        for j in range(1, i):
-                            self.board[x - j][y - j] = self.player
-                        break
-                    elif self.board[x - i][y - i] == 0:
-                        break
+        for i in range(y - 1, -1, -1):
+            if self.board[x][i] == 0:
+                break
+            elif self.board[x][i] == self.board[x][y]:
+                for j in range(y - 1, i, -1):
+                    self.board[x][j] = self.board[x][y]
+                break
+
         # Check if the piece is outflanked by a piece of the same color to the bottom right
         # If it is, change the color of the pieces between the two pieces of the same color
         # If it is not, do nothing
-        if x < 7 and y < 7:
-            for i in range(1, 8):
-                if x + i < 8 and y + i < 8:
-                    if self.board[x + i][y + i] == self.player:
-                        for j in range(1, i):
-                            self.board[x + j][y + j] = self.player
-                        break
-                    elif self.board[x + i][y + i] == 0:
-                        break
+        for i in range(1, 8):
+            if x + i > 7 or y + i > 7:
+                break
+            elif self.board[x + i][y + i] == 0:
+                break
+            elif self.board[x + i][y + i] == self.board[x][y]:
+                for j in range(1, i):
+                    self.board[x + j][y + j] = self.board[x][y]
+                break
+        
+        # Check if the piece is outflanked by a piece of the same color to the top left
+        # If it is, change the color of the pieces between the two pieces of the same color
+        # If it is not, do nothing
+        for i in range(1, 8):
+            if x - i < 0 or y - i < 0:
+                break
+            elif self.board[x - i][y - i] == 0:
+                break
+            elif self.board[x - i][y - i] == self.board[x][y]:
+                for j in range(1, i):
+                    self.board[x - j][y - j] = self.board[x][y]
+                break
+
         # Check if the piece is outflanked by a piece of the same color to the bottom left
         # If it is, change the color of the pieces between the two pieces of the same color
         # If it is not, do nothing
-        if x > 0 and y < 7:
-            for i in range(1, 8):
-                if x - i >= 0 and y + i < 8:
-                    if self.board[x - i][y + i] == self.player:
-                        for j in range(1, i):
-                            self.board[x - j][y + j] = self.player
-                        break
-                    elif self.board[x - i][y + i] == 0:
-                        break
+        for i in range(1, 8):
+            if x - i < 0 or y + i > 7:
+                break
+            elif self.board[x - i][y + i] == 0:
+                break
+            elif self.board[x - i][y + i] == self.board[x][y]:
+                for j in range(1, i):
+                    self.board[x - j][y + j] = self.board[x][y]
+                break
+        
+        # Check if the piece is outflanked by a piece of the same color to the top right
+        # If it is, change the color of the pieces between the two pieces of the same color
+        # If it is not, do nothing
+        for i in range(1, 8):
+            if x + i > 7 or y - i < 0:
+                break
+            elif self.board[x + i][y - i] == 0:
+                break
+            elif self.board[x + i][y - i] == self.board[x][y]:
+                for j in range(1, i):
+                    self.board[x + j][y - j] = self.board[x][y]
+                break
